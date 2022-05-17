@@ -24,6 +24,11 @@ uint32_t displayTimer = 0;
 
 bool hit = false;
 
+// By default, radio:
+// * PA MAX
+// * LNA enabled
+// * 1 MBS
+
 bool begin_mesh()
 {
 	if (mesh.begin(MESH_DEFAULT_CHANNEL, RF24_250KBPS, MESH_RENEWAL_TIMEOUT))

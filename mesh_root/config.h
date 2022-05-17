@@ -11,3 +11,8 @@
 #define RADIO_IRQ_PIN  2
 
 #define LED_PIN 4
+
+#define BUZZER_PIN 3
+#define NOTE       330
+
+#define NODE_CONNECTION_TIMEOUT 10
