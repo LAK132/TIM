@@ -123,7 +123,7 @@ void loop()
 		Serial.println(F("Enter \"c\" to clear hits"));
 		Serial.println();
 
-		for (uint16_t i = 0; i < node_count; ++i)
+		for (uint16_t i = 1; i < node_count; ++i)
 		{
 			Serial.print(F("Node "));
 			Serial.print(i);
@@ -155,7 +155,7 @@ void loop()
 		if (value == 'c' || value == 'C')
 		{
 			noTone(BUZZER_PIN);
-			for (uint16_t i = 1; i <= node_count; i++) nodes[i].hit = false;
+			for (uint16_t i = 0; i < node_count; ++i) nodes[i].hit = false;
 			Serial.println("Hits cleared");
 		}
 	}
