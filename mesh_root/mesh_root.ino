@@ -90,7 +90,8 @@ void loop()
 
 			default:
 				network.read(header, nullptr, 0);
-				Serial.println(header.type);
+				Serial.print(F("Invalid message type: "));
+				Serial.println(char(header.type));
 				break;
 		}
 	}
