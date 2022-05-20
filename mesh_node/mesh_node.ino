@@ -78,7 +78,7 @@ void setup()
 	Serial.println(F("Connected"));
 
 	// Start sampllind and Give HP filter time to remove DC offsetts
-	for (unsigned i = 0; i < 50; i++)
+	for (unsigned i = 0; i < 200; i++)
 	{
 		const vec<int16_t> accel = read_accel_filtered();
 		delay(interval);

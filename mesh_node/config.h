@@ -21,7 +21,7 @@ const float sample_frequency = 50.0f;
 #define RADIO_CE_PIN   7
 #define RADIO_IRQ_PIN  2
 
-#define IMPACT_THRESHOLD 100 // raw ADC value
+#define IMPACT_THRESHOLD 80 // raw ADC value
 
 #define ACCEL_X_PIN A7
 #define ACCEL_Y_PIN A6
