@@ -161,7 +161,7 @@ void loop()
 				{
 					// If address renewal fails, reconfigure the radio and restart the
 					// mesh This allows recovery from most if not all radio errors
-					begin_mesh();
+					if (!begin_mesh()) Serial.println(F("Lost connection"));
 				}
 			}
 			else
