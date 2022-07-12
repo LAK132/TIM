@@ -1,0 +1,12 @@
+[submodule "computer/include/lak"]
+	path = computer/include/lak
+	url = https://github.com/LAK132/lak
+	ignore = dirty
+[submodule "computer/include/imgui"]
+	path = computer/include/imgui
+	url = https://github.com/LAK132/ImSoft
+	ignore = dirty
+[submodule "computer/include/glm"]
+	path = computer/include/glm
+	url = https://github.com/g-truc/glm
+	ignore = dirty

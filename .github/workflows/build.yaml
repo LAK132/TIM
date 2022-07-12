@@ -1,0 +1,59 @@
+name: Build
+
+on:
+  push:
+    branches: [ trunc ]
+  pull_request:
+    branches: [ trunc ]
+  workflow_dispatch:
+
+jobs:
+  build-x86-64:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.9.x'
+      - uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x64
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          setup-options: computer --buildtype debugoptimized
+          meson-version: 0.61.0
+  build-x86:
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.9.x'
+      - uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x86
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          setup-options: computer --buildtype debugoptimized
+          meson-version: 0.61.0
+  # build-ubuntu:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v2
+  #       with:
+  #         submodules: recursive
+  #     - run: sudo apt-get update && sudo apt-get install libsdl2-dev
+  #     - uses: egor-tensin/setup-clang@v1
+  #       with:
+  #         version: 13
+  #     - uses: BSFishy/meson-build@v1.0.3
+  #       with:
+  #         action: build
+  #         setup-options: computer --buildtype debugoptimized
+  #         meson-version: 0.61.0

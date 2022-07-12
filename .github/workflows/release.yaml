@@ -1,0 +1,88 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - '*'
+  workflow_dispatch:
+
+jobs:
+  create-release:
+    outputs:
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+      tag: ${{ steps.get_tag.outputs.TAG }}
+    runs-on: windows-2019
+    steps:
+      - run: echo ::set-output name=TAG::${GITHUB_REF/refs\/tags\//}
+        shell: bash
+        id: get_tag
+      - uses: actions/create-release@v1
+        id: create_release
+        with:
+          draft: false
+          prerelease: true
+          release_name: TIM ${{ github.ref }}
+          tag_name: ${{ github.ref }}
+          body_path: CHANGELOG.md
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+
+  build-x86-64:
+    needs: create-release
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x64
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: build
+          setup-options: computer --buildtype debugoptimized
+          meson-version: 0.61.0
+      - run: |
+          Compress-Archive -Path build\tim.exe, build\tim.pdb, build\SDL2.dll -DestinationPath TIM-x86-64.zip
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: TIM-x86-64.zip
+          asset_name: TIM-${{ needs.create-release.outputs.tag }}-x86-64.zip
+          asset_content_type: application/zip
+
+  build-x86:
+    needs: create-release
+    runs-on: windows-2019
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: recursive
+      - uses: actions/setup-python@v1
+        with:
+          python-version: '3.x'
+      - uses: bus1/cabuild/action/msdevshell@v1
+        with:
+          architecture: x86
+      - uses: BSFishy/meson-build@v1.0.3
+        with:
+          action: build
+          directory: build
+          setup-options: computer --buildtype debugoptimized
+          meson-version: 0.61.0
+      - run: |
+          Compress-Archive -Path build\tim.exe, build\tim.pdb, build\SDL2.dll -DestinationPath TIM-x86.zip
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        with:
+          upload_url: ${{ needs.create-release.outputs.upload_url }}
+          asset_path: TIM-x86.zip
+          asset_name: TIM-${{ needs.create-release.outputs.tag }}-x86.zip
+          asset_content_type: application/zip
